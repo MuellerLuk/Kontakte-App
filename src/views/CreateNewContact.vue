@@ -30,7 +30,6 @@
 
                 <!-- Speichern der eingegebenen Daten -->
                 <div v-if="showValue">
-                  <p>Sie haben eingegeben: {{ firstname }}</p>
                    <p>Sie haben eingegeben: {{ kontakte }}</p>
                 </div>
           <ion-item>
