@@ -9,6 +9,30 @@
     <ion-content :fullscreen="true">
       <div id="container">
         <ion-list>
+        <ion-item>
+              <ion-input required v-model="firstname" placeholder="Vorname"></ion-input>
+        </ion-item>
+        <ion-item>
+              <ion-input required v-model="lastname" placeholder="Nachname"></ion-input>
+        </ion-item>
+        <ion-item>
+               <ion-input required v-model="phonenumber" placeholder="Telefonnummer"></ion-input>
+        </ion-item>
+        <ion-item>
+                <ion-input required v-model="email" placeholder="E-Mail"></ion-input>
+        </ion-item>
+        <ion-item>
+                <ion-input required v-model="birthday" placeholder="Geburtstag"></ion-input>
+        </ion-item>
+
+            <!-- Button zum Speichern der Eingabe -->
+                <ion-button @click="save">Speichern</ion-button>
+
+                <!-- Speichern der eingegebenen Daten -->
+                <div v-if="showValue">
+                  <p>Sie haben eingegeben: {{ firstname }}</p>
+                   <p>Sie haben eingegeben: {{ kontakte }}</p>
+                </div>
           <ion-item>
               <ion-label>
                 Hallo
@@ -21,15 +45,63 @@
           </ion-item>
         </ion-list>
       </div>
+
     </ion-content>
+
   </ion-page>
+
 </template>
 
-<script setup lang="ts">
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+<script>
+import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonInput } from '@ionic/vue';
 import { IonButton } from '@ionic/vue';
-import { defineComponent } from 'vue';
 
+
+
+
+export default {
+components: {
+IonInput,
+IonButton,
+IonContent,
+IonHeader,
+IonItem,
+IonList,
+IonPage,
+IonTitle,
+IonToolbar
+},
+    data(){
+        return{
+            firstname: '',
+            lastname: '',
+            phonenumber: '',
+            email: '',
+            birthday: '',
+            kontakte: [],
+            showValue: false
+      }
+    },
+    methods: {
+        save() {
+          this.showValue = true;
+          //Kontakt-Eigenschaften
+          this.kontakte.push(this.firstname);
+          this.kontakte.push(this.lastname);
+          this.kontakte.push(this.phonenumber);
+          this.kontakte.push(this.email);
+          this.kontakte.push(this.birthday);
+
+          //Input wieder leeren
+          this.firstname= '';
+          this.lastname = '';
+          this.phonenumber= '';
+          this.email= '';
+          this.birthday= ''
+        },
+      },
+
+}
 </script>
 
 <style scoped>

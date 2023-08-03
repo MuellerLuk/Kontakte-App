@@ -3,7 +3,7 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-title>Kontakte</ion-title>
-        <ion-button router-link="New" router-direction="/new">+</ion-button>
+        <ion-button router-link="New">+</ion-button>
       </ion-toolbar>
     </ion-header>
 
@@ -14,6 +14,7 @@
             <ion-label>
               Lukas
             </ion-label>
+
           </ion-item>
           <ion-item>
             <ion-label>
@@ -32,13 +33,14 @@ import { IonButton } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { useIonRouter } from '@ionic/vue';
 
+
 defineComponent({
   methods: {
     navigateToCreation() {
       const ionRouter = useIonRouter();
       ionRouter.push("/createNewContact");
     }
-  }
+  },
 });
 </script>
 
