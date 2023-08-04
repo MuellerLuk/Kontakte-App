@@ -26,22 +26,14 @@
         </ion-item>
 
             <!-- Button zum Speichern der Eingabe -->
-                <ion-button @click="save">Speichern</ion-button>
+                <ion-button @click="save" router-link="Home">Speichern</ion-button>
+                <ion-button @click="cancel" router-link="Home">Abbrechen</ion-button>
 
-                <!-- Speichern der eingegebenen Daten -->
+                <!-- Speichern der eingegebenen Dates -->
                 <div v-if="showValue">
+                  <p>Sie haben eingegeben: {{ firstname }}</p>
                    <p>Sie haben eingegeben: {{ kontakte }}</p>
                 </div>
-          <ion-item>
-              <ion-label>
-                Hallo
-              </ion-label>
-          </ion-item>
-          <ion-item>
-              <ion-label>
-                Welt
-              </ion-label>
-          </ion-item>
         </ion-list>
       </div>
 
@@ -52,11 +44,18 @@
 </template>
 
 <script>
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonInput } from '@ionic/vue';
-import { IonButton } from '@ionic/vue';
+import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonInput, IonButton, useIonRouter } from '@ionic/vue';
+import { defineComponent } from 'vue';
+import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
 
-
-
+defineComponent({
+  methods: {
+    navigateToCreation() {
+      const ionRouter = useIonRouter();
+      ionRouter.push("/HomePage");
+    }
+  },
+});
 
 export default {
 components: {
@@ -89,15 +88,47 @@ IonToolbar
           this.kontakte.push(this.lastname);
           this.kontakte.push(this.phonenumber);
           this.kontakte.push(this.email);
-          this.kontakte.push(this.birthday);
+          this.kontakte.push(this.birthday)
 
-          //Input wieder leeren
+          const createNewContact = async () => {
+            const res = await Contacts.createContact({
+              contact: {
+                name: {
+                  given: this.firstname,
+                  family: this.lastname,
+                },
+                birthday: {
+                  year: 1990,
+                  month: 1,
+                  day: 1,
+                },
+                phones: [
+                  {
+                    type: PhoneType.Mobile,
+                    label: 'mobile',
+                    number: this.phonenumber,
+                  },
+                ],
+                emails: [
+                  {
+                    type: EmailType.Work,
+                    label: 'work',
+                    address: this.email,
+                  },
+                ],
+              },
+            });
+
+            console.log(res.contactId);
+          };
+        },
+       cancel() {
           this.firstname= '';
           this.lastname = '';
           this.phonenumber= '';
           this.email= '';
           this.birthday= ''
-        },
+       },
       },
 
 }
@@ -106,12 +137,11 @@ IonToolbar
 <style scoped>
 #container {
   text-align: center;
-  
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 50;
+
 }
 
 #container strong {
@@ -122,9 +152,9 @@ IonToolbar
 #container p {
   font-size: 16px;
   line-height: 22px;
-  
+
   color: #8c8c8c;
-  
+
   margin: 0;
 }
 
