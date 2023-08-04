@@ -81,7 +81,7 @@ IonToolbar
       }
     },
     methods: {
-        save() {
+        async save() {
           this.showValue = true;
           //Kontakt-Eigenschaften
           this.kontakte.push(this.firstname);
@@ -90,7 +90,6 @@ IonToolbar
           this.kontakte.push(this.email);
           this.kontakte.push(this.birthday)
 
-          const createNewContact = async () => {
             const res = await Contacts.createContact({
               contact: {
                 name: {
@@ -120,7 +119,7 @@ IonToolbar
             });
 
             console.log(res.contactId);
-          };
+        
         },
        cancel() {
           this.firstname= '';
