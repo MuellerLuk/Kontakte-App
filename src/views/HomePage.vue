@@ -19,7 +19,7 @@
   </ion-page>
 </template>
 
-<script setup lang="ts">
+<script>
 import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonLabel } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
@@ -33,7 +33,31 @@ defineComponent({
   },
 });
 
+export default {
+    components: {
+        IonButton,
+        IonContent,
+        IonHeader,
+        IonItem,
+        IonList,
+        IonPage,
+        IonTitle,
+        IonToolbar
+    },
+    created() {
+        const retrieveListOfContacts = async() => {
+            const projection = {
+                name:true,
+                phones:true,
+                postalAddresses:true,
+            };
 
+            const result = awaitContacts.getContacts({
+                projection,
+            });
+        };
+    }
+}
 
 </script>
 

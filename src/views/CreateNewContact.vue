@@ -25,7 +25,7 @@
                 <ion-input required v-model="birthday" placeholder="Geburtstag"></ion-input>
         </ion-item>
 
-            <!-- Button zum Speichern der Eingabe -->
+            <!-- Button zum Speichern der Eingabe und zum Abbrechen -->
                 <ion-button @click="save" router-link="Home">Speichern</ion-button>
                 <ion-button @click="cancel" router-link="Home">Abbrechen</ion-button>
 
@@ -50,7 +50,7 @@ import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
 
 defineComponent({
   methods: {
-    navigateToCreation() {
+    navigateToHome() {
       const ionRouter = useIonRouter();
       ionRouter.push("/HomePage");
     }
@@ -128,9 +128,8 @@ IonToolbar
           this.phonenumber= '';
           this.email= '';
           this.birthday= ''
-       },
-      },
-
+       }
+    }
 }
 </script>
 
