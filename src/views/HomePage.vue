@@ -20,14 +20,30 @@
 </template>
 <script>
 import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonLabel } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
 defineComponent({
   methods: {
     navigateToCreation() {
       const ionRouter = useIonRouter();
       ionRouter.push("/createNewContact");
-    }
+    },
+    
+    async loadContacts() {
+          const projection = {
+            name: true,
+            phones: true,
+            postalAddresses: true,
+          };
+          try {
+            const { contacts: loadedContacts } = await Contacts.getContacts({
+              projection,
+            });
+            contacts.value = loadedContacts;
+          } catch (error) {
+            console.error("Error loading contacts:", error);
+          }
+        }
   },
 });
 export default {
@@ -43,19 +59,12 @@ export default {
         IonToolbar
     },
     created() {       
-        const projection = {
-        name:true,
-        phones:true,
-        postalAddresses:true,
-        };
-        const contacts = ref([]);
-        contacts = awaitContacts.getContacts({
-          projection,
-         });
         
-    },
-    methods: {
-      
+        const contacts = ref([]);
+
+        
+
+        loadContacts();
     }
 }
 </script>
