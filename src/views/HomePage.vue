@@ -22,14 +22,27 @@
 import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonLabel } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
-defineComponent({
-  methods: {
-    navigateToCreation() {
-      const ionRouter = useIonRouter();
-      ionRouter.push("/createNewContact");
+
+export default defineComponent({
+  components: {
+        IonButton,
+        IonContent,
+        IonHeader,
+        IonItem,
+        IonLabel,
+        IonList,
+        IonPage,
+        IonTitle,
+        IonToolbar
     },
-    
-    async loadContacts() {
+
+    methods: {
+      navigateToCreation() {
+        const ionRouter = useIonRouter();
+        ionRouter.push("/createNewContact");
+      },
+
+      async loadContacts() {
           const projection = {
             name: true,
             phones: true,
@@ -44,29 +57,34 @@ defineComponent({
             console.error("Error loading contacts:", error);
           }
         }
-  },
-});
-export default {
-    components: {
-        IonButton,
-        IonContent,
-        IonHeader,
-        IonItem,
-        IonLabel,
-        IonList,
-        IonPage,
-        IonTitle,
-        IonToolbar
     },
-    created() {       
-        
-        const contacts = ref([]);
+ 
+    setup() {
+      const contacts = ref([]);
 
-        
+      async function loadContacts() {
+        const projection = {
+          name: true,
+          phones: true,
+          postalAddresses: true,
+        };
+        try {
+          const { contacts: loadedContacts } = await Contacts.getContacts({
+            projection,
+          });
+         contacts.value = loadedContacts;
+        } catch (error) {
+          console.error("Error loading contacts:", error);
+       }
+      }
 
-        loadContacts();
-    }
-}
+      loadContacts();
+
+      return {
+        contacts,
+      };
+    },
+  });
 </script>
 <style scoped>
 #container {
