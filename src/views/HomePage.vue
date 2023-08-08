@@ -1,6 +1,6 @@
 
 <template>
-  <ion-page>
+  <ion-page @ionViewWillEnter="refreshContacts">
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-title>Kontakte</ion-title>
@@ -19,8 +19,8 @@
   </ion-page>
 </template>
 <script>
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonLabel } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
+import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonLabel   } from '@ionic/vue';
+import { defineComponent, ref, onBeforeMount } from 'vue';
 import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
 
 export default defineComponent({
@@ -43,20 +43,24 @@ export default defineComponent({
       },
 
       async loadContacts() {
-          const projection = {
-            name: true,
-            phones: true,
-            postalAddresses: true,
-          };
-          try {
-            const { contacts: loadedContacts } = await Contacts.getContacts({
-              projection,
-            });
-            contacts.value = loadedContacts;
-          } catch (error) {
-            console.error("Error loading contacts:", error);
-          }
-        }
+        const projection = {
+          name: true,
+          phones: true,
+          postalAddresses: true,
+        };
+        try {
+          const { contacts: loadedContacts } = await Contacts.getContacts({
+            projection,
+          });
+          contacts.value = loadedContacts;
+        } catch (error) {
+          console.error("Error loading contacts:", error);
+        }        
+      },
+
+      refreshContacts() {
+        loadContacts();
+      }
     },
  
     setup() {
@@ -78,7 +82,9 @@ export default defineComponent({
        }
       }
 
-      loadContacts();
+      onBeforeMount(() => {
+        loadContacts();
+      });
 
       return {
         contacts,
