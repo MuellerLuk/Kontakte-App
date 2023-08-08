@@ -41,26 +41,6 @@ export default defineComponent({
         const ionRouter = useIonRouter();
         ionRouter.push("/createNewContact");
       },
-
-      async loadContacts() {
-        const projection = {
-          name: true,
-          phones: true,
-          postalAddresses: true,
-        };
-        try {
-          const { contacts: loadedContacts } = await Contacts.getContacts({
-            projection,
-          });
-          contacts.value = loadedContacts;
-        } catch (error) {
-          console.error("Error loading contacts:", error);
-        }        
-      },
-
-      refreshContacts() {
-        loadContacts();
-      }
     },
  
     setup() {
@@ -82,12 +62,17 @@ export default defineComponent({
        }
       }
 
+      async function refreshContacts() {
+        await loadContacts();
+    }
+
       onBeforeMount(() => {
         loadContacts();
       });
 
       return {
         contacts,
+        refreshContacts
       };
     },
   });
