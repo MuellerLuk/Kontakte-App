@@ -84,6 +84,7 @@ IonToolbar
         async save() {
           this.showValue = true;
           //Kontakt-Eigenschaften
+          //Test-Commit
           this.kontakte.push(this.firstname);
           this.kontakte.push(this.lastname);
           this.kontakte.push(this.phonenumber);
@@ -155,7 +156,6 @@ IonToolbar
 
   margin: 0;
 }
-
 #container a {
   text-decoration: none;
 }
