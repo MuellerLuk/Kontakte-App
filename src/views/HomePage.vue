@@ -1,5 +1,5 @@
 <template>
-  <ion-page @ionViewWillEnter="refreshContacts">
+  <ion-page @ionViewDidEnter="loadContacts">
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-title>Kontakte</ion-title>
@@ -19,63 +19,57 @@
 </template>
 
 <script>
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonLabel   } from '@ionic/vue';
-import { defineComponent, ref, onBeforeMount } from 'vue';
-import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
+import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, IonLabel } from '@ionic/vue';
+import { defineComponent, ref } from 'vue';
+import { Contacts } from '@capacitor-community/contacts';
 
 export default defineComponent({
   components: {
-        IonButton,
-        IonContent,
-        IonHeader,
-        IonItem,
-        IonLabel,
-        IonList,
-        IonPage,
-        IonTitle,
-        IonToolbar
-    },
+    IonButton,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonPage,
+    IonTitle,
+    IonToolbar
+  },
 
-    methods: {
-      navigateToCreation() {
-        const ionRouter = useIonRouter();
-        ionRouter.push("/createNewContact");
-      },
-    },
- 
-    setup() {
-      const contacts = ref([]);
+  setup() {
+    const contacts = ref([]);
 
-      async function loadContacts() {
-        const projection = {
-          name: true,
-          phones: true,
-          postalAddresses: true,
-        };
-        try {
-          const { contacts: loadedContacts } = await Contacts.getContacts({
-            projection,
-          });
-         contacts.value = loadedContacts;
-        } catch (error) {
-          console.error("Error loading contacts:", error);
-       }
+    async function loadContacts() {
+      const projection = {
+        name: true,
+        phones: true,
+        postalAddresses: true,
+      };
+      try {
+        const { contacts: loadedContacts } = await Contacts.getContacts({
+          projection,
+        });
+        contacts.value = loadedContacts;
+      } catch (error) {
+        console.error("Error loading contacts:", error);
       }
-
-      async function refreshContacts() {
-        await loadContacts();
     }
 
-      onBeforeMount(() => {
-        loadContacts();
-      });
+    async function refreshContacts() {
+      await loadContacts();
+    }
 
-      return {
-        contacts,
-        refreshContacts
-      };
-    },
-  });
+    return {
+      contacts,
+      loadContacts,
+      refreshContacts
+    };
+  },
+
+  async ionViewDidEnter() {
+    await this.loadContacts();
+  }
+});
 </script>
 
 <style scoped>
