@@ -52,7 +52,7 @@ defineComponent({
   methods: {
     navigateToHome() {
       const ionRouter = useIonRouter();
-      ionRouter.push("/HomePage");
+      ionRouter.replace("/HomePage");
     }
   },
 });
