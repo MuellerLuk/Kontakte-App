@@ -1,6 +1,6 @@
 
 <template>
-  <ion-page @ionViewWillEnter="refreshContacts">
+  <ion-page @ionViewWillEnter="loadContacts">
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-title>Kontakte</ion-title>
@@ -21,7 +21,7 @@
 <script>
 import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonLabel   } from '@ionic/vue';
 import { defineComponent, ref, onBeforeMount } from 'vue';
-import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
+import { Contacts} from '@capacitor-community/contacts';
 
 export default defineComponent({
   components: {
@@ -34,6 +34,10 @@ export default defineComponent({
         IonPage,
         IonTitle,
         IonToolbar
+    },
+
+    async ionViewDidEnter() {
+      this.contacts = await this.loadContacts();
     },
 
     methods: {
@@ -62,19 +66,20 @@ export default defineComponent({
        }
       }
 
-      async function refreshContacts() {
-        await loadContacts();
-    }
-
       onBeforeMount(() => {
         loadContacts();
       });
 
       return {
         contacts,
-        refreshContacts
+        loadContacts
       };
     },
+    data() {
+      return {
+        contacts: [],
+      };
+    }
   });
 </script>
 <style scoped>
