@@ -9,7 +9,7 @@
     <ion-content :fullscreen="true">
       <div id="container">
         <ion-list>
-          <ion-item v-for="contact in contacts" :key="contact.id" @click="openContactDetails(contact.id)">
+          <ion-item v-for="contact in contacts" :key="contact.id" @click="openContactDetails(contact)">
             <ion-label>{{ contact.name }}</ion-label>
           </ion-item>
         </ion-list>
@@ -56,9 +56,10 @@ export default defineComponent({
       }
     }
 
-    async function openContactDetails(contactId) {
+    async function openContactDetails(contact) {
       ionRouter.push({
-        path: `/contactDetails/${contactId}`,
+        path: `/contactDetails/${contact}`,
+        props: { contact } // Übergeben des Kontakt-Objekts im "state"
       });
     }
 

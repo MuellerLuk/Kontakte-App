@@ -10,19 +10,24 @@
       <div id="container">
         <ion-list>
           <ion-item>
-            <ion-input required v-model="firstname" placeholder="Vorname"></ion-input>
+            <ion-label>Vorname:</ion-label>
+            <ion-text v-if="contact">{{ contact.firstname }}</ion-text>
           </ion-item>
           <ion-item>
-            <ion-input required v-model="lastname" placeholder="Nachname"></ion-input>
+            <ion-label>Nachname:</ion-label>
+            <ion-text v-if="contact">{{ contact.lastname }}</ion-text>
           </ion-item>
           <ion-item>
-            <ion-input required v-model="phonenumber" placeholder="Telefonnummer"></ion-input>
+            <ion-label>Telefonnummer:</ion-label>
+            <ion-text v-if="contact">{{ contact.phonenumber }}</ion-text>
           </ion-item>
           <ion-item>
-            <ion-input required v-model="email" placeholder="E-Mail"></ion-input>
+            <ion-label>E-Mail:</ion-label>
+            <ion-text v-if="contact">{{ contact.email }}</ion-text>
           </ion-item>
           <ion-item>
-            <ion-input required v-model="birthday" placeholder="Geburtstag"></ion-input>
+            <ion-label>Geburtstag:</ion-label>
+            <ion-text v-if="contact">{{ contact.birthday }}</ion-text>
           </ion-item>
 
           <!-- Button zum Speichern der Eingabe und zum Abbrechen -->
@@ -41,93 +46,72 @@
 </template>
 
 <script>
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonInput, IonButton, useIonRouter } from '@ionic/vue';
+import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonText, useIonRouter } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
+import { Contacts } from '@capacitor-community/contacts';
 
-defineComponent({
-  methods: {
-    navigateToHome() {
-      const ionRouter = useIonRouter();
-      ionRouter.replace("/HomePage");
+export default defineComponent({
+  components: {
+    IonInput,
+    IonButton,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonPage,
+    IonTitle,
+    IonText,
+    IonToolbar
+  },
+  props: {
+    contact: {
+      type: Object,
+      required: true
     }
   },
-});
-
-export default {
-components: {
-IonInput,
-IonButton,
-IonContent,
-IonHeader,
-IonItem,
-IonList,
-IonPage,
-IonTitle,
-IonToolbar
-},
-    data(){
-        return{
-            firstname: '',
-            lastname: '',
-            phonenumber: '',
-            email: '',
-            birthday: '',
-            kontakte: [],
-            showValue: false
-      }
-    },
-    methods: {
-        async remove() {
-          this.showValue = true;
-          //Kontakt-Eigenschaften
-          //Test-Commit
-          this.kontakte.push(this.firstname);
-          this.kontakte.push(this.lastname);
-          this.kontakte.push(this.phonenumber);
-          this.kontakte.push(this.email);
-          this.kontakte.push(this.birthday)
-
-            const res = await Contacts.createContact({
-              contact: {
-                name: {
-                  given: this.firstname,
-                  family: this.lastname,
-                },
-                birthday: {
-                  year: 1990,
-                  month: 1,
-                  day: 1,
-                },
-                phones: [
-                  {
-                    type: PhoneType.Mobile,
-                    label: 'mobile',
-                    number: this.phonenumber,
-                  },
-                ],
-                emails: [
-                  {
-                    type: EmailType.Work,
-                    label: 'work',
-                    address: this.email,
-                  },
-                ],
-              },
-            });
-
-            console.log(res.contactId);
-        
-        },
-       cancel() {
-          this.firstname= '';
-          this.lastname = '';
-          this.phonenumber= '';
-          this.email= '';
-          this.birthday= ''
-       }
+  data() {
+    return {
+      firstname: '',
+      lastname: '',
+      phonenumber: '',
+      email: '',
+      birthday: '',
+      kontakte: [],
+      showValue: false
     }
-}
+  },
+  methods: {
+    async remove() {
+      this.showValue = true;
+      // Hier die Logik für das Löschen des Kontakts hinzufügen.
+      // Kontaktinformationen werden im Data-Objekt gehalten, hier kannst du sie löschen.
+      const contactIndexToRemove = this.kontakte.findIndex(contact => {
+        return (
+          contact.firstname === this.firstname &&
+          contact.lastname === this.lastname &&
+          contact.phonenumber === this.phonenumber &&
+          contact.email === this.email &&
+          contact.birthday === this.birthday
+        );
+      });
+
+      if (contactIndexToRemove !== -1) {
+        // Entferne den Kontakt aus der Liste
+        this.kontakte.splice(contactIndexToRemove, 1);
+      }
+
+      // Log-Ausgabe für den Kontakt-ID entfernt, da 'res' nicht definiert ist.
+    },
+    cancel() {
+      this.firstname = '';
+      this.lastname = '';
+      this.phonenumber = '';
+      this.email = '';
+      this.birthday = '';
+    }
+  }
+});
 </script>
 
 <style scoped>
