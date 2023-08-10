@@ -11,23 +11,23 @@
         <ion-list>
           <ion-item>
             <ion-label>Vorname:</ion-label>
-            <ion-text v-if="contact">{{ contact.firstname }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.firstname }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Nachname:</ion-label>
-            <ion-text v-if="contact">{{ contact.lastname }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.lastname }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Telefonnummer:</ion-label>
-            <ion-text v-if="contact">{{ contact.phonenumber }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.phonenumber }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>E-Mail:</ion-label>
-            <ion-text v-if="contact">{{ contact.email }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.email }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Geburtstag:</ion-label>
-            <ion-text v-if="contact">{{ contact.birthday }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.birthday }}</ion-text>
           </ion-item>
 
           <!-- Button zum Speichern der Eingabe und zum Abbrechen -->
@@ -49,6 +49,7 @@
 import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonText, useIonRouter } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { Contacts } from '@capacitor-community/contacts';
+
 
 export default defineComponent({
   components: {
@@ -104,11 +105,6 @@ export default defineComponent({
       // Log-Ausgabe für den Kontakt-ID entfernt, da 'res' nicht definiert ist.
     },
     cancel() {
-      this.firstname = '';
-      this.lastname = '';
-      this.phonenumber = '';
-      this.email = '';
-      this.birthday = '';
     }
   }
 });

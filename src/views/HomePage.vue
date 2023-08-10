@@ -9,7 +9,7 @@
     <ion-content :fullscreen="true">
       <div id="container">
         <ion-list>
-          <ion-item v-for="contact in contacts" :key="contact.id" @click="openContactDetails(contact)">
+          <ion-item v-for="contact in contacts" :key="contact" @click="openContactDetails(contact)">
             <ion-label>{{ contact.name }}</ion-label>
           </ion-item>
         </ion-list>

@@ -12,12 +12,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/home',
     name: 'Home',
-    component: HomePage
+    component: HomePage,
+    props: true
   },
   {
     path: '/contactDetails/:contact',
     name: 'Detail',
     component: contactDetails,
+    props: true
   },
   {
       path: '/new',
