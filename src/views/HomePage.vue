@@ -3,13 +3,13 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-title>Kontakte</ion-title>
-        <ion-button router-link="New">+</ion-button>
+        <ion-button @click="navigateToNewContact">+</ion-button>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <div id="container">
         <ion-list>
-          <ion-item v-for="contact in contacts" :key="contact.id">
+          <ion-item v-for="contact in contacts" :key="contact.id" @click="openContactDetails(contact.id)">
             <ion-label>{{ contact.name }}</ion-label>
           </ion-item>
         </ion-list>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, IonLabel } from '@ionic/vue';
+import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, IonLabel, useIonRouter } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { Contacts } from '@capacitor-community/contacts';
 
@@ -37,6 +37,7 @@ export default defineComponent({
   },
 
   setup() {
+    const ionRouter = useIonRouter();
     const contacts = ref([]);
 
     async function loadContacts() {
@@ -55,20 +56,27 @@ export default defineComponent({
       }
     }
 
-    async function refreshContacts() {
-      await loadContacts();
+    async function openContactDetails(contactId) {
+      ionRouter.push({
+        path: `/contactDetails/${contactId}`,
+      });
+    }
+
+    function navigateToNewContact() {
+      ionRouter.push('/New'); // Navigieren zur Seite "New" (Neuen Kontakt erstellen)
     }
 
     return {
       contacts,
       loadContacts,
-      refreshContacts
+      openContactDetails,
+      navigateToNewContact
     };
   },
 
   async ionViewDidEnter() {
     await this.loadContacts();
-  }
+  },
 });
 </script>
 
