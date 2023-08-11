@@ -46,7 +46,8 @@
 </template>
 
 <script>
-import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonText, useIonRouter } from '@ionic/vue';
+import { IonContent, IonHeader, IonItem, IonLabel, IonList, 
+  IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonText, useIonRouter, modalController } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { Contacts } from '@capacitor-community/contacts';
 
@@ -71,23 +72,10 @@ export default defineComponent({
       required: true
     }
   },
-  data() {
-    return {
-      firstname: '',
-      lastname: '',
-      phonenumber: '',
-      email: '',
-      birthday: '',
-      kontakte: [],
-      showValue: false
-    }
-  },
   methods: {
     async remove() {
       this.showValue = true;
-      // Hier die Logik für das Löschen des Kontakts hinzufügen.
-      // Kontaktinformationen werden im Data-Objekt gehalten, hier kannst du sie löschen.
-      const contactIndexToRemove = this.kontakte.findIndex(contact => {
+      const contactIndexToRemove = this.contact.findIndex(contact => {
         return (
           contact.firstname === this.firstname &&
           contact.lastname === this.lastname &&
@@ -98,13 +86,13 @@ export default defineComponent({
       });
 
       if (contactIndexToRemove !== -1) {
-        // Entferne den Kontakt aus der Liste
-        this.kontakte.splice(contactIndexToRemove, 1);
+
+        this.contacts.splice(contactIndexToRemove, 1);
       }
 
-      // Log-Ausgabe für den Kontakt-ID entfernt, da 'res' nicht definiert ist.
     },
     cancel() {
+      return modalController.dismiss(null, "cancel");
     }
   }
 });

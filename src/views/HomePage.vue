@@ -19,9 +19,10 @@
 </template>
 
 <script>
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, IonLabel, useIonRouter } from '@ionic/vue';
+import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, IonLabel, useIonRouter, modalController } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { Contacts } from '@capacitor-community/contacts';
+import ContactDetails from '../components/ContactDetails.vue';
 
 export default defineComponent({
   components: {
@@ -55,12 +56,14 @@ export default defineComponent({
         console.error("Error loading contacts:", error);
       }
     }
-
     async function openContactDetails(contact) {
-      ionRouter.push({
-        path: `/contactDetails/${contact}`,
-        props: { contact } // Übergeben des Kontakt-Objekts im "state"
+      const modal = await modalController.create({
+        component: ContactDetails,
+        componentProps: {
+          contact: contact
+        },
       });
+      modal.present();
     }
 
     function navigateToNewContact() {

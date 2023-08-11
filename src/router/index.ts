@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import NewContact from '../views/CreateNewContact.vue';
-import contactDetails from '../views/contactDetails.vue';
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -13,12 +13,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/home',
     name: 'Home',
     component: HomePage,
-    props: true
-  },
-  {
-    path: '/contactDetails/:contact',
-    name: 'Detail',
-    component: contactDetails,
     props: true
   },
   {
