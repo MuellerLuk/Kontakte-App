@@ -10,7 +10,7 @@
       <div id="container">
         <ion-list>
           <ion-item v-for="contact in contacts" :key="contact" @click="openContactDetails(contact)">
-            <ion-label>{{ contact.name }}</ion-label>
+            <ion-label>{{ contact.name.display }}</ion-label>
           </ion-item>
         </ion-list>
       </div>

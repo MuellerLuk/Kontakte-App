@@ -11,23 +11,23 @@
         <ion-list>
           <ion-item>
             <ion-label>Vorname:</ion-label>
-            <ion-text v-if="contact">{{ contact?.firstname }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.name.given }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Nachname:</ion-label>
-            <ion-text v-if="contact">{{ contact?.lastname }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.name.family }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Telefonnummer:</ion-label>
-            <ion-text v-if="contact">{{ contact?.phonenumber }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.phones[0].number }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>E-Mail:</ion-label>
-            <ion-text v-if="contact">{{ contact?.email }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.emails[0].address }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Geburtstag:</ion-label>
-            <ion-text v-if="contact">{{ contact?.birthday }}</ion-text>
+            <ion-text v-if="contact">{{ contact?.birthday.day }}{{'.'}}{{ contact?.birthday.month }}{{'.'}}{{ contact?.birthday.year }}</ion-text>
           </ion-item>
 
           <!-- Button zum Speichern der Eingabe und zum Abbrechen -->

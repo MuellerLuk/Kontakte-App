@@ -48,6 +48,7 @@ import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar,
 import { defineComponent } from 'vue';
 import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
 
+
 defineComponent({
   methods: {
     navigateToHome() {
@@ -91,6 +92,13 @@ IonToolbar
           this.kontakte.push(this.email);
           this.kontakte.push(this.birthday)
 
+          const [day, month, year] = this.birthday.split('.'); // Trenne den Geburtstag in Tag, Monat und Jahr
+          if (day && month && year) {
+              const birthdayData = {
+                year: parseInt(year, 10),
+                month: parseInt(month, 10),
+                day: parseInt(day, 10),
+              };
             const res = await Contacts.createContact({
               contact: {
                 name: {
@@ -98,9 +106,9 @@ IonToolbar
                   family: this.lastname,
                 },
                 birthday: {
-                  year: 1990,
-                  month: 1,
-                  day: 1,
+                  year: birthdayData.year,
+                  month: birthdayData.month,
+                  day: birthdayData.day,
                 },
                 phones: [
                   {
@@ -120,8 +128,9 @@ IonToolbar
             });
 
             console.log(res.contactId);
+        }},
         
-        },
+
        cancel() {
           this.firstname= '';
           this.lastname = '';
