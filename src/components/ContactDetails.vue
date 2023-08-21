@@ -92,20 +92,18 @@ export default defineComponent({
       } else {
         console.warn("No phone numbers available for this contact.");
       }
-    }
     },
     
     writeEmail(contact) {
       const emailAddresses = contact.emails || [];
       if (emailAddresses.length > 0) {
-        const emailAddress = emailAddresses[0].value; // Assuming you want to open the first email address
+        const emailAddress = emailAddresses[0].value;
         const mailtoURL = `mailto:${emailAddress}`;
 
-        window.location.href = mailtoURL; // Open the default mail app
+        window.location.href = mailtoURL;
       } else {
         console.warn("No email addresses available for this contact.");
       }
-    }
     },
 
     cancel() {
