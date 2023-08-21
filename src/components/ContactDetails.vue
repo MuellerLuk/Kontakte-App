@@ -74,23 +74,15 @@ export default defineComponent({
   },
   methods: {
     async remove() {
-      this.showValue = true;
-      const contactIndexToRemove = this.contact.findIndex(contact => {
-        return (
-          contact.firstname === this.firstname &&
-          contact.lastname === this.lastname &&
-          contact.phonenumber === this.phonenumber &&
-          contact.email === this.email &&
-          contact.birthday === this.birthday
-        );
-      });
-
-      if (contactIndexToRemove !== -1) {
-
-        this.contacts.splice(contactIndexToRemove, 1);
+      try {
+        await Contacts.deleteContact({
+          contactId: contact.id
+        });
+      } catch (error) {
+        console.error("Error deleting contact: ", error);
       }
-
     },
+
     cancel() {
       return modalController.dismiss(null, "cancel");
     }
