@@ -17,11 +17,11 @@
             <ion-label>Nachname:</ion-label>
             <ion-text v-if="contact">{{ contact?.name.family }}</ion-text>
           </ion-item>
-          <ion-item>
+          <ion-item @click="callContact(contact)">
             <ion-label>Telefonnummer:</ion-label>
             <ion-text v-if="contact">{{ contact?.phones[0].number }}</ion-text>
           </ion-item>
-          <ion-item>
+          <ion-item @click="writeEmail(contact)">
             <ion-label>E-Mail:</ion-label>
             <ion-text v-if="contact">{{ contact?.emails[0].address }}</ion-text>
           </ion-item>
@@ -81,6 +81,31 @@ export default defineComponent({
       } catch (error) {
         console.error("Error deleting contact: ", error);
       }
+    },
+    callContact(contact) {
+      const phoneNumbers = contact.phones || [];
+      if (phoneNumbers.length > 0) {
+        const phoneNumber = phoneNumbers[0].value;
+        const telURL = `tel:${phoneNumber}`;
+
+        window.location.href = telURL;
+      } else {
+        console.warn("No phone numbers available for this contact.");
+      }
+    }
+    },
+    
+    writeEmail(contact) {
+      const emailAddresses = contact.emails || [];
+      if (emailAddresses.length > 0) {
+        const emailAddress = emailAddresses[0].value; // Assuming you want to open the first email address
+        const mailtoURL = `mailto:${emailAddress}`;
+
+        window.location.href = mailtoURL; // Open the default mail app
+      } else {
+        console.warn("No email addresses available for this contact.");
+      }
+    }
     },
 
     cancel() {
