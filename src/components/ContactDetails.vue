@@ -11,30 +11,28 @@
         <ion-list>
           <ion-item>
             <ion-label>Vorname:</ion-label>
-            <ion-text v-if="contact">{{ contact?.name.given }}</ion-text>
+            <ion-text v-if="contact.name.given">{{ contact?.name.given }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Nachname:</ion-label>
-            <ion-text v-if="contact">{{ contact?.name.family }}</ion-text>
+            <ion-text v-if="contact.name.family">{{ contact?.name.family }}</ion-text>
           </ion-item>
           <ion-item @click="callContact(contact)">
             <ion-label>Telefonnummer:</ion-label>
-            <ion-text v-if="contact">{{ contact?.phones[0].number }}</ion-text>
+            <ion-text v-if="contact.phones[0].number">{{ contact?.phones[0].number }}</ion-text>
           </ion-item>
           <ion-item @click="writeEmail(contact)">
             <ion-label>E-Mail:</ion-label>
-            <ion-text v-if="contact">{{ contact?.emails[0].address }}</ion-text>
+            <ion-text v-if="contact.emails[0].address">{{ contact.emails[0].address }}</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Geburtstag:</ion-label>
-            <ion-text v-if="contact">{{ contact?.birthday.day }}{{'.'}}{{ contact?.birthday.month }}{{'.'}}{{ contact?.birthday.year }}</ion-text>
+            <ion-text v-if="contact?.birthday?.day && contact?.birthday?.month && contact?.birthday?.year">{{ contact?.birthday?.day }}{{'.'}}{{ contact?.birthday?.month }}{{'.'}}{{ contact?.birthday?.year }}</ion-text>
           </ion-item>
 
-          <!-- Button zum Speichern der Eingabe und zum Abbrechen -->
-          <ion-button @click="remove" router-link="/home">Löschen</ion-button>
+          <ion-button @click="deleteContact(contact)" router-link="/home">Löschen</ion-button>
           <ion-button @click="cancel" router-link="/home">Abbrechen</ion-button>
 
-          <!-- Speichern der eingegebenen Daten -->
           <div v-if="showValue">
             <p>Sie haben eingegeben: {{ firstname }}</p>
             <p>Sie haben eingegeben: {{ kontakte }}</p>
@@ -73,10 +71,10 @@ export default defineComponent({
     }
   },
   methods: {
-    async remove() {
+    async deleteContact(contact) {
       try {
         await Contacts.deleteContact({
-          contactId: contact.id
+          contactId: contact?.id
         });
       } catch (error) {
         console.error("Error deleting contact: ", error);

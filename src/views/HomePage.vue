@@ -67,7 +67,7 @@ export default defineComponent({
     }
 
     function navigateToNewContact() {
-      ionRouter.push('/New'); // Navigieren zur Seite "New" (Neuen Kontakt erstellen)
+      ionRouter.push('/New');
     }
 
     return {

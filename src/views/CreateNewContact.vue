@@ -70,7 +70,6 @@ IonToolbar
             email: '',
             birthday: '',
             kontakte: [],
-            showValue: false
       }
     },
     methods: {
@@ -84,9 +83,9 @@ IonToolbar
           
           const [day, month, year] = this.birthday.split('.');
           let birthdayData = {
-            year: "--",
-            month: "--",
-            day: "----",
+            year: null,
+            month: null,
+            day: null,
           };
 
         if (year && month && day) {
