@@ -24,16 +24,8 @@
         <ion-item>
                 <ion-input required v-model="birthday" placeholder="Geburtstag"></ion-input>
         </ion-item>
-
-            <!-- Button zum Speichern der Eingabe und zum Abbrechen -->
                 <ion-button @click="save" router-link="Home">Speichern</ion-button>
                 <ion-button @click="cancel" router-link="Home">Abbrechen</ion-button>
-
-                <!-- Speichern der eingegebenen Dates -->
-                <div v-if="showValue">
-                  <p>Sie haben eingegeben: {{ firstname }}</p>
-                   <p>Sie haben eingegeben: {{ kontakte }}</p>
-                </div>
         </ion-list>
       </div>
 
@@ -83,22 +75,28 @@ IonToolbar
     },
     methods: {
         async save() {
-          this.showValue = true;
-          //Kontakt-Eigenschaften
-          //Test-Commit
+
           this.kontakte.push(this.firstname);
           this.kontakte.push(this.lastname);
           this.kontakte.push(this.phonenumber);
           this.kontakte.push(this.email);
           this.kontakte.push(this.birthday)
+          
+          const [day, month, year] = this.birthday.split('.');
+          let birthdayData = {
+            year: "--",
+            month: "--",
+            day: "----",
+          };
 
-          const [day, month, year] = this.birthday.split('.'); // Trenne den Geburtstag in Tag, Monat und Jahr
-          if (day && month && year) {
-              const birthdayData = {
-                year: parseInt(year, 10),
-                month: parseInt(month, 10),
-                day: parseInt(day, 10),
-              };
+        if (year && month && day) {
+          birthdayData = {
+            year: parseInt(year, 10),
+            month: parseInt(month, 10),
+            day: parseInt(day, 10),
+          };
+        }
+
             const res = await Contacts.createContact({
               contact: {
                 name: {
@@ -128,7 +126,7 @@ IonToolbar
             });
 
             console.log(res.contactId);
-        }},
+        },
         
 
        cancel() {
