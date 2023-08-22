@@ -30,8 +30,8 @@
             <ion-text v-if="contact?.birthday?.day && contact?.birthday?.month && contact?.birthday?.year">{{ contact?.birthday?.day }}{{'.'}}{{ contact?.birthday?.month }}{{'.'}}{{ contact?.birthday?.year }}</ion-text>
           </ion-item>
 
-          <ion-button @click="deleteContact(contact)" router-link="/home">Löschen</ion-button>
-          <ion-button @click="cancel" router-link="/home">Abbrechen</ion-button>
+          <ion-button @click="deleteContact" router-link="Home">Löschen</ion-button>
+          <ion-button @click="cancel" router-link="Home">Abbrechen</ion-button>
 
           <div v-if="showValue">
             <p>Sie haben eingegeben: {{ firstname }}</p>
@@ -71,19 +71,20 @@ export default defineComponent({
     }
   },
   methods: {
-    async deleteContact(contact) {
+    async deleteContact() {
       try {
+        console.log(this.contact)
         await Contacts.deleteContact({
-          contactId: contact?.id
+          contactId: this.contact?.contactId
         });
       } catch (error) {
         console.error("Error deleting contact: ", error);
       }
     },
-    callContact(contact) {
-      const phoneNumbers = contact.phones || [];
+    callContact() {
+      const phoneNumbers = this.contact.phones || [];
       if (phoneNumbers.length > 0) {
-        const phoneNumber = phoneNumbers[0].value;
+        const phoneNumber = phoneNumbers[0].number;
         const telURL = `tel:${phoneNumber}`;
 
         window.location.href = telURL;
@@ -92,10 +93,10 @@ export default defineComponent({
       }
     },
     
-    writeEmail(contact) {
-      const emailAddresses = contact.emails || [];
+    writeEmail() {
+      const emailAddresses = this.contact.emails || [];
       if (emailAddresses.length > 0) {
-        const emailAddress = emailAddresses[0].value;
+        const emailAddress = emailAddresses[0].address;
         const mailtoURL = `mailto:${emailAddress}`;
 
         window.location.href = mailtoURL;
