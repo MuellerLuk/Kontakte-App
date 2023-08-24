@@ -64,6 +64,18 @@ export default defineComponent({
     IonText,
     IonToolbar
   },
+
+  data(){
+        return{
+            firstname: '',
+            lastname: '',
+            phonenumber: '',
+            email: '',
+            birthday: '',
+            kontakte: [],
+      }
+    },
+
   props: {
     contact: {
       type: Object,
@@ -103,6 +115,11 @@ export default defineComponent({
       } else {
         console.warn("No email addresses available for this contact.");
       }
+    },
+
+    navigateToHome() {
+      const ionRouter = useIonRouter();
+      ionRouter.replace("/HomePage");
     },
 
     cancel() {

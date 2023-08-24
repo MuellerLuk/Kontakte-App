@@ -124,7 +124,14 @@ IonToolbar
               },
             });
 
+            this.firstname= '';
+            this.lastname = '';
+            this.phonenumber= '';
+            this.email= '';
+            this.birthday= '';
+
             console.log(res.contactId);
+
         },
         
 
