@@ -47,10 +47,18 @@
 import { IonContent, IonHeader, IonItem, IonLabel, IonList, 
   IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonText, useIonRouter, modalController } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import { Contacts } from '@capacitor-community/contacts';
+import {Contacts}  from '@capacitor-community/contacts';
 
+defineComponent({
+  methods: {
+    navigateToHome() {
+      const ionRouter = useIonRouter();
+      ionRouter.replace("/HomePage");
+    }
+  },
+});
 
-export default defineComponent({
+export default {
   components: {
     IonInput,
     IonButton,
@@ -86,12 +94,15 @@ export default defineComponent({
     async deleteContact() {
       try {
         console.log(this.contact)
-        await Contacts.deleteContact({
+        const res = await Contacts.deleteContact({
           contactId: this.contact?.contactId
         });
+        console.log(res.contactId);
       } catch (error) {
         console.error("Error deleting contact: ", error);
       }
+      //this.$emit('contactDeleted');
+      return modalController.dismiss(null, "deleteContact");
     },
     callContact() {
       const phoneNumbers = this.contact.phones || [];
@@ -116,17 +127,11 @@ export default defineComponent({
         console.warn("No email addresses available for this contact.");
       }
     },
-
-    navigateToHome() {
-      const ionRouter = useIonRouter();
-      ionRouter.replace("/HomePage");
-    },
-
     cancel() {
       return modalController.dismiss(null, "cancel");
     }
   }
-});
+};
 </script>
 
 <style scoped>

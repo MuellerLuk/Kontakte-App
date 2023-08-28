@@ -20,7 +20,7 @@
 
 <script>
 import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, IonLabel, useIonRouter, modalController } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { Contacts } from '@capacitor-community/contacts';
 import ContactDetails from '../components/ContactDetails.vue';
 
@@ -62,7 +62,11 @@ export default defineComponent({
         componentProps: {
           contact: contact
         },
+        
       });
+      modal.onDidDismiss().then(() => {
+          loadContacts(); // Aktualisieren Sie die Kontaktliste, wenn das Modal geschlossen wird
+        });
       modal.present();
     }
 
