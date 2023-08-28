@@ -48,6 +48,7 @@
     IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonText, useIonRouter, modalController } from '@ionic/vue';
   import { defineComponent } from 'vue';
   import { Contacts } from '@capacitor-community/contacts';
+  import { Dialog } from '@capacitor/dialog';
   
   
   export default defineComponent({
@@ -84,15 +85,24 @@
     },
     methods: {
       async deleteContact() {
-        try {
-          console.log(this.contact)
-          await Contacts.deleteContact({
-            contactId: this.contact?.contactId
+        const result = await Dialog.confirm({
+            title: 'Kontakt löschen',
+            message: 'Möchten Sie den Kontakt wirklich löschen?',
+            cancelButtonTitle: 'Abbrechen',
+            okButtonTitle: 'Löschen',
           });
-        } catch (error) {
-          console.error("Error deleting contact: ", error);
-        }
-        return modalController.dismiss(null, "deleteContact");
+          
+          if(result) {
+            try {       
+              console.log(this.contact)
+              await Contacts.deleteContact({
+                contactId: this.contact?.contactId
+              });
+            } catch (error) {
+              console.error("Error deleting contact: ", error);
+            }
+            return modalController.dismiss(null, "deleteContact");
+          }
       },
       callContact() {
         const phoneNumbers = this.contact.phones || [];
