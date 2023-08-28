@@ -21,6 +21,7 @@
 <script>
 import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar, IonButton, IonLabel, useIonRouter, modalController } from '@ionic/vue';
 import { defineComponent, ref, watch } from 'vue';
+import { Dialog } from '@capacitor/dialog';
 import { Contacts } from '@capacitor-community/contacts';
 import ContactDetails from '../components/ContactDetails.vue';
 
@@ -41,6 +42,31 @@ export default defineComponent({
     const ionRouter = useIonRouter();
     const contacts = ref([]);
 
+    async function checkAndRequestPermissions() {
+    const permissionStatus = await Contacts.checkPermissions();
+
+    if (permissionStatus.contacts !== 'granted') {
+      const result = await Dialog.confirm({
+
+
+        title: 'Berechtigungen erforderlich',
+        message: 'Die App benötigt Zugriff auf deine Kontakte. Möchtest du die Berechtigungen erteilen?',
+        cancelButtonTitle: 'Abbrechen',
+        okButtonTitle: 'Berechtigungen erteilen',
+      });
+
+      if (result) {
+        const permissionResult = await Contacts.requestPermissions();
+
+        if (permissionResult.contacts === 'granted') {
+          await loadContacts();
+        }
+      }
+    } else {
+      await loadContacts();
+    }
+  }
+
     async function loadContacts() {
       const projection = {
         name: true,
@@ -51,11 +77,18 @@ export default defineComponent({
         const { contacts: loadedContacts } = await Contacts.getContacts({
           projection,
         });
-        contacts.value = loadedContacts;
+        const sortedContacts = loadedContacts.sort((a, b) => {
+          const nameA = a.name.display.toLowerCase();
+          const nameB = b.name.display.toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
+
+        contacts.value = sortedContacts;
       } catch (error) {
         console.error("Error loading contacts:", error);
       }
     }
+
     async function openContactDetails(contact) {
       const modal = await modalController.create({
         component: ContactDetails,
@@ -65,7 +98,7 @@ export default defineComponent({
         
       });
       modal.onDidDismiss().then(() => {
-          loadContacts(); // Aktualisieren Sie die Kontaktliste, wenn das Modal geschlossen wird
+          loadContacts();
         });
       modal.present();
     }
@@ -78,11 +111,13 @@ export default defineComponent({
       contacts,
       loadContacts,
       openContactDetails,
-      navigateToNewContact
+      navigateToNewContact,
+      checkAndRequestPermissions
     };
   },
 
   async ionViewDidEnter() {
+    await this.checkAndRequestPermissions();
     await this.loadContacts();
   },
 });
