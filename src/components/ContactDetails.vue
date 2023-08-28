@@ -92,6 +92,8 @@ export default defineComponent({
       } catch (error) {
         console.error("Error deleting contact: ", error);
       }
+
+      return modalController.dismiss(null, "cancel");
     },
     callContact() {
       const phoneNumbers = this.contact.phones || [];
