@@ -92,7 +92,6 @@
         } catch (error) {
           console.error("Error deleting contact: ", error);
         }
-  
         return modalController.dismiss(null, "deleteContact");
       },
       callContact() {
